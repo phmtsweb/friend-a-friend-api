@@ -2,13 +2,15 @@
   "name": "friend-a-friend-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./build/server.js",
   "scripts": {
     "start": "node ./build/server.js",
     "start:dev": "tsx watch ./src/server.ts",
     "build": "tsup ./src --out-dir build",
     "test:watch": "vitest --dir ./src/useCases",
-    "test": "vitest run --dir ./src/useCases"
+    "test": "vitest run --dir ./src/useCases",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "keywords": [],
   "author": "",

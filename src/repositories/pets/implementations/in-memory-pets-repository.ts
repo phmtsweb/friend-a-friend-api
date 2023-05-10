@@ -1,5 +1,11 @@
 import { randomUUID } from 'node:crypto'
-import { Pet, PetDTO, PetsRepository } from '../interface/pets-repository'
+import {
+  FilterOptions,
+  PaginationOptions,
+  Pet,
+  PetDTO,
+  PetsRepository,
+} from '../interface/pets-repository'
 import { Org } from '@/repositories/orgs/interface/orgs-repository'
 
 export class InMemoryPetsRepository implements PetsRepository {
@@ -27,11 +33,53 @@ export class InMemoryPetsRepository implements PetsRepository {
     return this.pets.find((pet) => pet.id === id) ?? null
   }
 
-  async fetchByOrgId(orgId: string): Promise<Pet[]> {
-    return this.pets.filter((pet) => pet.organization.id === orgId)
+  async findManyByOrgId(
+    orgId: string,
+    { page, limit }: PaginationOptions,
+    {
+      age,
+      size,
+      energyLevel,
+      environment,
+      independencyLevel,
+    }: FilterOptions = {},
+  ): Promise<Pet[]> {
+    return this.pets
+      .filter((pet) => {
+        return (
+          pet.organization.id === orgId &&
+          (!age || pet.age === age) &&
+          (!size || pet.size === size) &&
+          (!energyLevel || pet.energyLevel === energyLevel) &&
+          (!environment || pet.environment === environment) &&
+          (!independencyLevel || pet.independencyLevel === independencyLevel)
+        )
+      })
+      .slice((page - 1) * limit, page * limit)
   }
 
-  async fetchByCity(city: string): Promise<Pet[]> {
-    return this.pets.filter((pet) => pet.organization.address.city === city)
+  async findManyByCity(
+    city: string,
+    { page, limit }: PaginationOptions,
+    {
+      age,
+      size,
+      energyLevel,
+      environment,
+      independencyLevel,
+    }: FilterOptions = {},
+  ): Promise<Pet[]> {
+    return this.pets
+      .filter((pet) => {
+        return (
+          pet.organization.address.city === city &&
+          (!age || pet.age === age) &&
+          (!size || pet.size === size) &&
+          (!energyLevel || pet.energyLevel === energyLevel) &&
+          (!environment || pet.environment === environment) &&
+          (!independencyLevel || pet.independencyLevel === independencyLevel)
+        )
+      })
+      .slice((page - 1) * limit, page * limit)
   }
 }

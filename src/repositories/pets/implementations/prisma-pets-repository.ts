@@ -1,4 +1,10 @@
-import { Pet, PetDTO, PetsRepository } from '../interface/pets-repository'
+import {
+  FilterOptions,
+  PaginationOptions,
+  Pet,
+  PetDTO,
+  PetsRepository,
+} from '../interface/pets-repository'
 import { prisma } from '@/lib/prisma'
 import {
   Pet as PetPrisma,
@@ -105,10 +111,21 @@ export class PrismaPetsRepository implements PetsRepository {
     return this.formatPetObject(pet)
   }
 
-  async fetchByOrgId(orgId: string): Promise<Pet[]> {
+  async findManyByOrgId(
+    orgId: string,
+    { page, limit }: PaginationOptions,
+    { age, size, energyLevel, environment, independencyLevel }: FilterOptions,
+  ): Promise<Pet[]> {
     const pets = await prisma.pet.findMany({
       where: {
         organization_id: orgId,
+        age: age ? { equals: age } : undefined,
+        size: size ? { equals: size } : undefined,
+        energy_level: energyLevel ? { equals: energyLevel } : undefined,
+        environment: environment ? { equals: environment } : undefined,
+        independency_level: independencyLevel
+          ? { equals: independencyLevel }
+          : undefined,
       },
       include: {
         organization: {
@@ -119,12 +136,18 @@ export class PrismaPetsRepository implements PetsRepository {
         photos: true,
         requirements: true,
       },
+      skip: (page - 1) * limit,
+      take: limit,
     })
 
     return pets.map(this.formatPetObject)
   }
 
-  async fetchByCity(city: string): Promise<Pet[]> {
+  async findManyByCity(
+    city: string,
+    { page, limit }: PaginationOptions,
+    { age, size, energyLevel, environment, independencyLevel }: FilterOptions,
+  ): Promise<Pet[]> {
     const pets = await prisma.pet.findMany({
       where: {
         organization: {
@@ -132,6 +155,13 @@ export class PrismaPetsRepository implements PetsRepository {
             city,
           },
         },
+        age: age ? { equals: age } : undefined,
+        size: size ? { equals: size } : undefined,
+        energy_level: energyLevel ? { equals: energyLevel } : undefined,
+        environment: environment ? { equals: environment } : undefined,
+        independency_level: independencyLevel
+          ? { equals: independencyLevel }
+          : undefined,
       },
       include: {
         organization: {
@@ -142,6 +172,8 @@ export class PrismaPetsRepository implements PetsRepository {
         photos: true,
         requirements: true,
       },
+      skip: (page - 1) * limit,
+      take: limit,
     })
 
     return pets.map(this.formatPetObject)

@@ -32,6 +32,7 @@ export class PrismaOrgsRepository implements OrgsRepository {
       owner: org.owner,
       email: org.email,
       whatsapp: org.whatsapp,
+      password_hash: org.password_hash,
       address: {
         id: org.address.id,
         street: org.address.street,
@@ -62,6 +63,7 @@ export class PrismaOrgsRepository implements OrgsRepository {
       owner: org.owner,
       email: org.email,
       whatsapp: org.whatsapp,
+      password_hash: org.password_hash,
       address: {
         id: org.address.id,
         street: org.address.street,
@@ -92,6 +94,7 @@ export class PrismaOrgsRepository implements OrgsRepository {
       owner: org.owner,
       email: org.email,
       whatsapp: org.whatsapp,
+      password_hash: org.password_hash,
       address: {
         id: org.address.id,
         street: org.address.street,

@@ -20,9 +20,22 @@ export type Pet = {
   energyLevel: EnergyLevel
   environment: Environment
   independencyLevel: IndependencyLevel
-  organization: Org
+  organization: Omit<Org, 'password_hash'>
   photos?: string[]
   requirements?: string[]
+}
+
+export type PaginationOptions = {
+  page: number
+  limit: number
+}
+
+export type FilterOptions = {
+  age?: Age
+  size?: Size
+  energyLevel?: EnergyLevel
+  environment?: Environment
+  independencyLevel?: IndependencyLevel
 }
 
 export type PetDTO = Omit<Pet, 'id'>
@@ -30,6 +43,14 @@ export type PetDTO = Omit<Pet, 'id'>
 export interface PetsRepository {
   create(data: PetDTO): Promise<Pet>
   findById(id: string): Promise<Pet | null>
-  fetchByOrgId(orgId: string): Promise<Pet[]>
-  fetchByCity(city: string): Promise<Pet[]>
+  findManyByOrgId(
+    orgId: string,
+    options: PaginationOptions,
+    filterOptions: FilterOptions,
+  ): Promise<Pet[]>
+  findManyByCity(
+    city: string,
+    options: PaginationOptions,
+    filterOptions?: FilterOptions,
+  ): Promise<Pet[]>
 }

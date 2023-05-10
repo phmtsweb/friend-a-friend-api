@@ -7,6 +7,8 @@ const envSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string().default('10m'),
+  HASH_ROUNDS: z.coerce.number().default(6),
 })
 
 const _env = envSchema.safeParse(process.env)

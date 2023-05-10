@@ -18,13 +18,13 @@ export type Org = {
   id: string
   owner: string
   email: string
+  password_hash: string
   whatsapp: string
   address: Address
   pets?: Pet[]
 }
 
 export type OrgDTO = Omit<Org, 'id' | 'address'> & {
-  password_hash: string
   address: AddressDTO
 }
 
