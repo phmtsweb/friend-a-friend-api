@@ -9,3 +9,97 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Address {
+  id           String        @id @default(uuid())
+  street       String
+  number       Int
+  complement   String?
+  neighborhood String
+  city         String
+  state        String
+  zip          String
+  country      String
+  organization Organization?
+
+  @@map("addresses")
+}
+
+model Organization {
+  id            String  @id @default(uuid())
+  owner         String
+  email         String  @unique
+  password_hash String
+  whatsapp      String
+  address       Address @relation(fields: [address_id], references: [id])
+  address_id    String  @unique
+  pets          Pet[]
+
+  @@map("organizations")
+}
+
+model Pet {
+  id                 String            @id @default(uuid())
+  name               String
+  description        String?
+  age                Age
+  size               Size
+  energy_level       EnergyLevel
+  independency_level IndependencyLevel
+  environment        Environment
+  organization       Organization      @relation(fields: [organization_id], references: [id])
+  organization_id    String
+  photos             Photos[]
+  requirements       Requirements[]
+
+  @@map("pets")
+}
+
+model Photos {
+  id     String @id @default(uuid())
+  url    String
+  pet_id String
+  pet    Pet    @relation(fields: [pet_id], references: [id])
+
+  @@map("photos")
+}
+
+model Requirements {
+  id          String @id @default(uuid())
+  pet_id      String
+  pet         Pet    @relation(fields: [pet_id], references: [id])
+  description String
+
+  @@map("requirements")
+}
+
+enum Size {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum EnergyLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum IndependencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Environment {
+  INDOOR
+  OUTDOOR
+  BOTH
+}
+
+enum Age {
+  BABY
+  YOUNG
+  ADULT
+  SENIOR
+}
