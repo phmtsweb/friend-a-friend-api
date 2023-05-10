@@ -3,11 +3,16 @@ import fastifyJwt from '@fastify/jwt'
 import fastifyCookie from '@fastify/cookie'
 import { globalErrorHandler } from './errors/globalErrorHandler'
 import { env } from './env'
+import { appRoutes } from './http/routes'
 
 const app = fastify()
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false,
+  },
   sign: {
     expiresIn: env.JWT_EXPIRES_IN,
   },
@@ -15,9 +20,7 @@ app.register(fastifyJwt, {
 
 app.register(fastifyCookie)
 
-app.get('/', async (request, reply) => {
-  reply.send({ hello: 'world 2' })
-})
+app.register(appRoutes, { prefix: '/api' })
 
 app.setErrorHandler(globalErrorHandler)
 

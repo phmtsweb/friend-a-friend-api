@@ -38,7 +38,9 @@ export type FilterOptions = {
   independencyLevel?: IndependencyLevel
 }
 
-export type PetDTO = Omit<Pet, 'id'>
+export type PetDTO = Omit<Pet, 'id' | 'organization'> & {
+  organization: Omit<Org, 'password_hash'> | string
+}
 
 export interface PetsRepository {
   create(data: PetDTO): Promise<Pet>

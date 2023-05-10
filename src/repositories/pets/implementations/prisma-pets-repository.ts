@@ -67,7 +67,7 @@ export class PrismaPetsRepository implements PetsRepository {
         energy_level: data.energyLevel,
         environment: data.environment,
         independency_level: data.independencyLevel,
-        organization_id: data.organization.id as string,
+        organization_id: data.organization as string,
         photos: {
           create: data.photos?.map((photo) => ({ url: photo })),
         },

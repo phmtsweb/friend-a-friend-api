@@ -15,7 +15,7 @@ describe('Create organization', () => {
       owner: 'John Doe',
       email: 'jonhdoe@mail.com',
       whatsapp: '123456789',
-      password_hash: '123456',
+      password: '123456',
       address: {
         street: 'Rua 1',
         number: 123,
@@ -43,7 +43,7 @@ describe('Create organization', () => {
       owner: 'John Doe',
       email: 'jonhdoe@mail.com',
       whatsapp: '123456789',
-      password_hash: '123456',
+      password: '123456',
       address: {
         street: 'Rua 1',
         number: 123,
@@ -60,7 +60,7 @@ describe('Create organization', () => {
         owner: 'John Doe',
         email: 'jonhdoe@mail.com',
         whatsapp: '123456789',
-        password_hash: '123456',
+        password: '123456',
         address: {
           street: 'Rua 1',
           number: 123,
